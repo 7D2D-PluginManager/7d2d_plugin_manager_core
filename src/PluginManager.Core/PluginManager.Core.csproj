@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{0BCD8652-CA49-489A-9CB5-135BE750C403}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>PluginManager.Core</RootNamespace>
+        <AssemblyName>PluginManager.Core</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>..\..\bin\1_PluginManager\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>..\..\bin\1_PluginManager\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition="Exists('..\..\libs\')">
+        <HarmonyPath>..\..\libs\</HarmonyPath>
+        <GameLibsPath>..\..\libs\</GameLibsPath>
+        <PluginManagerApiPath>..\..\libs\</PluginManagerApiPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="Exists('..\..\static\')">
+        <StaticPath>..\..\static\</StaticPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Xml"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Adapters\ClientInfoAdapter.cs"/>
+        <Compile Include="Adapters\Vector3Adapter.cs" />
+        <Compile Include="Adapters\Vector3IntAdapter.cs" />
+        <Compile Include="Application.cs"/>
+        <Compile Include="Capabilities\Events\EventBus.cs"/>
+        <Compile Include="Capabilities\GeoIP\GeoIpDataStorage.cs" />
+        <Compile Include="Capabilities\GeoIP\GeoIpService.cs" />
+        <Compile Include="Capabilities\GeoIP\IGeoIpService.cs" />
+        <Compile Include="Capabilities\Logger\Logger.cs" />
+        <Compile Include="Capabilities\Translations\JsonStringLocalizer.cs" />
+        <Compile Include="Capabilities\Translations\PlayerLanguageStore.cs" />
+        <Compile Include="Capabilities\Translations\PlayerLocalization.cs" />
+        <Compile Include="Capabilities\Translations\PlayerLocalizationFactory.cs" />
+        <Compile Include="Capabilities\Utils\GamePrefsUtil.cs" />
+        <Compile Include="Capabilities\Utils\GameStatsUtil.cs" />
+        <Compile Include="Capabilities\Utils\PlayerUtil.cs" />
+        <Compile Include="Capabilities\Utils\GameUtil.cs" />
+        <Compile Include="CapabilityRegistry.cs" />
+        <Compile Include="Commands\CommandContext.cs" />
+        <Compile Include="Commands\CommandManager.cs" />
+        <Compile Include="Config.cs" />
+        <Compile Include="ConsoleCommands\PluginCmdCommand.cs" />
+        <Compile Include="ConsoleCommands\PluginListCommand.cs" />
+        <Compile Include="ConsoleCommands\PluginLoadCommand.cs" />
+        <Compile Include="ConsoleCommands\PluginUnloadCommand.cs" />
+        <Compile Include="IPluginManager.cs" />
+        <Compile Include="LoadedPlugin.cs" />
+        <Compile Include="Mappers\CountryToCultureMapper.cs" />
+        <Compile Include="Mappers\EnumMapper.cs" />
+        <Compile Include="ModContext.cs" />
+        <Compile Include="Patches\ChatMessagePatch.cs" />
+        <Compile Include="Patches\DamageEntityPatch.cs" />
+        <Compile Include="Patches\TileEntityLockPatch.cs" />
+        <Compile Include="Patches\OpenTileEntityAllowedPatch.cs" />
+        <Compile Include="Patches\PlayerDisconnectPatch.cs" />
+        <Compile Include="Patches\PlayerJoinedPatch.cs" />
+        <Compile Include="Patches\MinEventActionLogPatch.cs" />
+        <Compile Include="Patches\PlayerSpawnedInWorldPatch.cs" />
+        <Compile Include="Patches\PlayerSpawningPatch.cs" />
+        <Compile Include="Patches\ServerShutdownPatch.cs" />
+        <Compile Include="Patches\SetBlockPatch.cs" />
+        <Compile Include="PluginBootstrap.cs" />
+        <Compile Include="PluginInfo.cs" />
+        <Compile Include="PluginManager.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.5" />
+        <PackageReference Include="MaxMind.GeoIP2" Version="5.4.1" />
+        <PackageReference Include="System.Text.Json" Version="10.0.5" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="PluginManager.Api">
+            <HintPath>$(PluginManagerApiPath)PluginManager.Api.dll</HintPath>
+        </Reference>
+        <Reference Include="0Harmony">
+            <HintPath>$(HarmonyPath)0Harmony.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(GameLibsPath)Assembly-CSharp.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="LogLibrary">
+            <HintPath>$(GameLibsPath)LogLibrary.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(GameLibsPath)UnityEngine.CoreModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.AudioModule">
+            <HintPath>$(GameLibsPath)UnityEngine.AudioModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    <Target Name="CopyToPluginFolder" AfterTargets="Build">
+        <ItemGroup>
+            <StaticFiles Include="$(StaticPath)\**\*.*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(StaticFiles)"
+              DestinationFiles="@(StaticFiles->'$(OutputPath)\%(RecursiveDir)%(Filename)%(Extension)')" />
+    </Target>
+</Project>

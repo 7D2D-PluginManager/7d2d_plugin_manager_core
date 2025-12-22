@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<xml>
+    <Name value="PluginManager"/>
+    <DisplayName value="Plugin Manager"/>
+    <Description value=""/>
+    <Author value="TouchMe"/>
+    <Version value="1.0.0"/>
+    <Website value="https://github.com/TouchMe-Inc/7d2d_plugin_manager/"/>
+</xml>
