@@ -49,56 +49,53 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Adapters\ClientInfoAdapter.cs"/>
-        <Compile Include="Adapters\Vector3Adapter.cs" />
-        <Compile Include="Adapters\Vector3IntAdapter.cs" />
+        <Compile Include="Adapters\Vector3Adapter.cs"/>
+        <Compile Include="Adapters\Vector3IntAdapter.cs"/>
         <Compile Include="Application.cs"/>
         <Compile Include="Capabilities\Events\EventBus.cs"/>
-        <Compile Include="Capabilities\GeoIP\GeoIpDataStorage.cs" />
-        <Compile Include="Capabilities\GeoIP\GeoIpService.cs" />
-        <Compile Include="Capabilities\GeoIP\IGeoIpService.cs" />
-        <Compile Include="Capabilities\Logger\Logger.cs" />
-        <Compile Include="Capabilities\Translations\JsonStringLocalizer.cs" />
-        <Compile Include="Capabilities\Translations\PlayerLanguageStore.cs" />
-        <Compile Include="Capabilities\Translations\PlayerLocalization.cs" />
-        <Compile Include="Capabilities\Translations\PlayerLocalizationFactory.cs" />
-        <Compile Include="Capabilities\Utils\GamePrefsUtil.cs" />
-        <Compile Include="Capabilities\Utils\GameStatsUtil.cs" />
-        <Compile Include="Capabilities\Utils\PlayerUtil.cs" />
-        <Compile Include="Capabilities\Utils\GameUtil.cs" />
-        <Compile Include="CapabilityRegistry.cs" />
-        <Compile Include="Commands\CommandContext.cs" />
-        <Compile Include="Commands\CommandManager.cs" />
-        <Compile Include="Config.cs" />
-        <Compile Include="ConsoleCommands\PluginCmdCommand.cs" />
-        <Compile Include="ConsoleCommands\PluginListCommand.cs" />
-        <Compile Include="ConsoleCommands\PluginLoadCommand.cs" />
-        <Compile Include="ConsoleCommands\PluginUnloadCommand.cs" />
-        <Compile Include="IPluginManager.cs" />
-        <Compile Include="LoadedPlugin.cs" />
-        <Compile Include="Mappers\CountryToCultureMapper.cs" />
-        <Compile Include="Mappers\EnumMapper.cs" />
-        <Compile Include="ModContext.cs" />
-        <Compile Include="Patches\ChatMessagePatch.cs" />
-        <Compile Include="Patches\DamageEntityPatch.cs" />
-        <Compile Include="Patches\TileEntityLockPatch.cs" />
-        <Compile Include="Patches\OpenTileEntityAllowedPatch.cs" />
-        <Compile Include="Patches\PlayerDisconnectPatch.cs" />
-        <Compile Include="Patches\PlayerJoinedPatch.cs" />
-        <Compile Include="Patches\MinEventActionLogPatch.cs" />
-        <Compile Include="Patches\PlayerSpawnedInWorldPatch.cs" />
-        <Compile Include="Patches\PlayerSpawningPatch.cs" />
-        <Compile Include="Patches\ServerShutdownPatch.cs" />
-        <Compile Include="Patches\SetBlockPatch.cs" />
-        <Compile Include="PluginBootstrap.cs" />
-        <Compile Include="PluginInfo.cs" />
-        <Compile Include="PluginManager.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Capabilities\GeoIP\GeoIpDataStorage.cs"/>
+        <Compile Include="Capabilities\GeoIP\GeoIpService.cs"/>
+        <Compile Include="Capabilities\GeoIP\IGeoIpService.cs"/>
+        <Compile Include="Capabilities\Logger\Logger.cs"/>
+        <Compile Include="Capabilities\Localization\PlayerLanguageStore.cs"/>
+        <Compile Include="Capabilities\Utils\GamePrefsUtil.cs"/>
+        <Compile Include="Capabilities\Utils\GameStatsUtil.cs"/>
+        <Compile Include="Capabilities\Utils\PlayerUtil.cs"/>
+        <Compile Include="Capabilities\Utils\GameUtil.cs"/>
+        <Compile Include="CapabilityRegistry.cs"/>
+        <Compile Include="Commands\CommandContext.cs"/>
+        <Compile Include="Commands\CommandManager.cs"/>
+        <Compile Include="Config.cs"/>
+        <Compile Include="ConsoleCommands\PluginCmdCommand.cs"/>
+        <Compile Include="ConsoleCommands\PluginListCommand.cs"/>
+        <Compile Include="ConsoleCommands\PluginLoadCommand.cs"/>
+        <Compile Include="ConsoleCommands\PluginUnloadCommand.cs"/>
+        <Compile Include="IPluginManager.cs"/>
+        <Compile Include="LoadedPlugin.cs"/>
+        <Compile Include="Mappers\CountryToCultureMapper.cs"/>
+        <Compile Include="Mappers\EnumMapper.cs"/>
+        <Compile Include="ModContext.cs"/>
+        <Compile Include="Patches\ChatMessagePatch.cs"/>
+        <Compile Include="Patches\DamageEntityPatch.cs"/>
+        <Compile Include="Patches\TileEntityLockPatch.cs"/>
+        <Compile Include="Patches\OpenTileEntityAllowedPatch.cs"/>
+        <Compile Include="Patches\PlayerDisconnectPatch.cs"/>
+        <Compile Include="Patches\PlayerJoinedPatch.cs"/>
+        <Compile Include="Patches\MinEventActionLogPatch.cs"/>
+        <Compile Include="Patches\PlayerSpawnedInWorldPatch.cs"/>
+        <Compile Include="Patches\PlayerSpawningPatch.cs"/>
+        <Compile Include="Patches\ServerShutdownPatch.cs"/>
+        <Compile Include="Patches\SetBlockPatch.cs"/>
+        <Compile Include="PluginBootstrap.cs"/>
+        <Compile Include="PluginInfo.cs"/>
+        <Compile Include="PluginManager.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.5" />
-        <PackageReference Include="MaxMind.GeoIP2" Version="5.4.1" />
-        <PackageReference Include="System.Text.Json" Version="10.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.5"/>
+        <PackageReference Include="MaxMind.GeoIP2" Version="5.4.1"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4"/>
     </ItemGroup>
     <ItemGroup>
         <Reference Include="PluginManager.Api">
@@ -127,9 +124,9 @@
     </ItemGroup>
     <Target Name="CopyToPluginFolder" AfterTargets="Build">
         <ItemGroup>
-            <StaticFiles Include="$(StaticPath)\**\*.*" />
+            <StaticFiles Include="$(StaticPath)\**\*.*"/>
         </ItemGroup>
         <Copy SourceFiles="@(StaticFiles)"
-              DestinationFiles="@(StaticFiles->'$(OutputPath)\%(RecursiveDir)%(Filename)%(Extension)')" />
+              DestinationFiles="@(StaticFiles->'$(OutputPath)\%(RecursiveDir)%(Filename)%(Extension)')"/>
     </Target>
 </Project>

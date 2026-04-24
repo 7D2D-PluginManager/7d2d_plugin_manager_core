@@ -3,7 +3,7 @@ using System.Globalization;
 using PluginManager.Api.Capabilities.Implementations.Translations;
 using PluginManager.Api.Proxy;
 
-namespace PluginManager.Core.Capabilities.Translations;
+namespace PluginManager.Core.Capabilities.Localization;
 
 public class PlayerLanguageStore : ProxyObject, IPlayerLanguageStore
 {

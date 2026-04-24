@@ -8,8 +8,8 @@ using PluginManager.Api.Capabilities.Implementations.Translations;
 using PluginManager.Api.Capabilities.Implementations.Utils;
 using PluginManager.Core.Capabilities.Events;
 using PluginManager.Core.Capabilities.GeoIp;
+using PluginManager.Core.Capabilities.Localization;
 using PluginManager.Core.Capabilities.Logger;
-using PluginManager.Core.Capabilities.Translations;
 using PluginManager.Core.Capabilities.Utils;
 using PluginManager.Core.Commands;
 
@@ -34,7 +34,6 @@ public class Application : IModApi
         capabilities.Register<IGamePrefsUtil>(new GamePrefsUtil());
         capabilities.Register<IPlayerLanguageStore>(playerLanguageStore);
         capabilities.Register<IGeoIpDataStorage>(geoIpDataStorage);
-        capabilities.Register<IPlayerLocalizationFactory>(new PlayerLocalizationFactory(playerLanguageStore));
 
         var pluginManager = new PluginManager(modInstance.Path, capabilities);
 
