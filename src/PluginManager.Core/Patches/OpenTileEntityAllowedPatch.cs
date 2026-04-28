@@ -24,8 +24,8 @@ public static class OpenTileEntityAllowedPatch
         }
 
         var tileEntityAccessAttemptEvent = new TileEntityAccessAttemptEvent(
-            _te.EntityId,
             _entityIdThatOpenedIt,
+            _te.entityId,
             EnumMapper<TileEntityType, Api.Contracts.TileEntityType>.Map(_te.GetTileEntityType()),
             Vector3IntAdapter.FromGame(position)
         );
