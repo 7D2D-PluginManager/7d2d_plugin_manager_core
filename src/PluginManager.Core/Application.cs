@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using HarmonyLib;
 using PluginManager.Api.Capabilities.Implementations.Commands;
@@ -19,37 +20,68 @@ public class Application : IModApi
 {
     public void InitMod(Mod modInstance)
     {
-        var eventRegistry = new EventRegistry();
-        var eventDispatcher = new EventDispatcher(eventRegistry);
-        var commandManager = new CommandManager();
-        var playerLanguageStore = new PlayerLanguageStore();
-        var geoIpDataStorage = new GeoIpDataStorage();
+        try
+        {
+            var eventRegistry = new EventRegistry();
+            var eventDispatcher = new EventDispatcher(eventRegistry);
+            var commandManager = new CommandManager();
+            var playerLanguageStore = new PlayerLanguageStore();
+            var geoIpDataStorage = new GeoIpDataStorage();
 
-        var capabilities = new CapabilityRegistry();
-        capabilities.Register<IEventHandlers>(eventRegistry);
-        capabilities.Register<ILogger>(new Logger());
-        capabilities.Register<ICommandManager>(commandManager);
-        capabilities.Register<IPlayerUtil>(new PlayerUtil());
-        capabilities.Register<IGameUtil>(new GameUtil());
-        capabilities.Register<IGameStatsUtil>(new GameStatsUtil());
-        capabilities.Register<IGamePrefsUtil>(new GamePrefsUtil());
-        capabilities.Register<IPlayerLanguageStore>(playerLanguageStore);
-        capabilities.Register<IGeoIpDataStorage>(geoIpDataStorage);
+            var capabilities = new CapabilityRegistry();
+            capabilities.Register<IEventHandlers>(eventRegistry);
+            capabilities.Register<ILogger>(new Logger());
+            capabilities.Register<ICommandManager>(commandManager);
+            capabilities.Register<IPlayerUtil>(new PlayerUtil());
+            capabilities.Register<IGameUtil>(new GameUtil());
+            capabilities.Register<IGameStatsUtil>(new GameStatsUtil());
+            capabilities.Register<IGamePrefsUtil>(new GamePrefsUtil());
+            capabilities.Register<IPlayerLanguageStore>(playerLanguageStore);
+            capabilities.Register<IGeoIpDataStorage>(geoIpDataStorage);
 
-        var pluginManager = new PluginManager(modInstance.Path, capabilities);
+            var pluginManager = new PluginManager(modInstance.Path, capabilities);
 
-        ModContext.Config = new Config();
-        ModContext.PluginManager = pluginManager;
-        ModContext.Capabilities = capabilities;
-        ModContext.EventRunner = eventDispatcher;
-        ModContext.CommandRegistry = commandManager;
-        ModContext.PlayerLanguageStore = playerLanguageStore;
-        ModContext.GeoIpService = new GeoIpService(Path.Combine(modInstance.Path, "GeoIp", "GeoLite2-City.mmdb"));
-        ModContext.GeoIpDataStorage = geoIpDataStorage;
+            ModContext.Config = new Config();
+            ModContext.PluginManager = pluginManager;
+            ModContext.Capabilities = capabilities;
+            ModContext.EventRunner = eventDispatcher;
+            ModContext.CommandRegistry = commandManager;
+            ModContext.PlayerLanguageStore = playerLanguageStore;
+            ModContext.GeoIpDataStorage = geoIpDataStorage;
 
-        pluginManager.Load();
+            try
+            {
+                ModContext.GeoIpService =
+                    new GeoIpService(Path.Combine(modInstance.Path, "GeoIp", "GeoLite2-City.mmdb"));
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"GeoIP init failed: {ex}");
+            }
 
-        var harmony = new Harmony("by.touchme.pluginmanager");
-        harmony.PatchAll();
+            try
+            {
+                var harmony = new Harmony("by.touchme.pluginmanager");
+                harmony.PatchAll();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Harmony patching failed: {ex}");
+            }
+
+            try
+            {
+                pluginManager.Load();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Plugin loading failed: {ex}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Fatal init error: {ex}");
+            throw;
+        }
     }
 }

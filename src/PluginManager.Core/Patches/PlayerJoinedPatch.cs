@@ -18,7 +18,7 @@ public static class PlayerJoinedPatch
         if (result == HookResult.Continue)
             ModContext.EventRunner.Publish(playerJoinedGameEvent, HookMode.Post);
 
-        if (ModContext.GeoIpService.TryGeoIpData(_cInfo.ip, out var geoIpData))
+        if (ModContext.GeoIpService != null && ModContext.GeoIpService.TryGeoIpData(_cInfo.ip, out var geoIpData))
         {
             ModContext.GeoIpDataStorage.SetGetGeoIpData(_cInfo.CrossplatformId.CombinedString, geoIpData);
 
