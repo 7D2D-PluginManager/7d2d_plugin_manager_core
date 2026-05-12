@@ -88,7 +88,7 @@ public static class ChatMessagePatch
 
             Log.Out(log);
 
-            var message = $"{chatMessageEvent.Name} : {chatMessageEvent.Message}";
+            var message = $"{chatMessageEvent.Name}[-]: {chatMessageEvent.Message}";
 
             if (_recipientEntityIds != null)
             {
