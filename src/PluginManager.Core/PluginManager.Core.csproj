@@ -79,6 +79,7 @@
         <Compile Include="ModContext.cs"/>
         <Compile Include="Patches\ChatMessagePatch.cs"/>
         <Compile Include="Patches\DamageEntityPatch.cs"/>
+        <Compile Include="Patches\GameMessagePatch.cs" />
         <Compile Include="Patches\TileEntityLockPatch.cs"/>
         <Compile Include="Patches\OpenTileEntityAllowedPatch.cs"/>
         <Compile Include="Patches\PlayerDisconnectPatch.cs"/>
