@@ -4,6 +4,7 @@ using PluginManager.Api.Capabilities.Implementations.Utils;
 using PluginManager.Api.Contracts;
 using PluginManager.Api.Proxy;
 using PluginManager.Core.Adapters;
+using PluginManager.Core.Mappers;
 using UnityEngine;
 using Vector3 = PluginManager.Api.Contracts.Vector3;
 using Vector3Int = PluginManager.Api.Contracts.Vector3Int;
@@ -40,7 +41,7 @@ public class PlayerUtil : ProxyObject, IPlayerUtil
 
         clientInfo.SendPackage(
             NetPackageManager.GetPackage<NetPackageSoundAtPosition>()
-                .Setup(entityPlayer.position, soundName, AudioRolloffMode.Linear, distance, entityId)
+                .Setup(entityPlayer.position, soundName, AudioRolloffMode.Linear, distance, entityId, 1.0f)
         );
     }
 
@@ -76,59 +77,15 @@ public class PlayerUtil : ProxyObject, IPlayerUtil
     public LandClaimOwner GetClaimOwner(int entityId, Vector3Int position)
     {
         var gm = GameManager.Instance;
-        var world = gm.World;
         var players = gm.persistentPlayers;
 
         var playerData = players?.GetPlayerDataFromEntityID(entityId);
         if (playerData == null) return LandClaimOwner.None;
 
-        var checkPos = Vector3i.FromVector3Rounded(Vector3IntAdapter.ToGame(position));
-        var claimSize = GameStats.GetInt(EnumGameStats.LandClaimSize);
-        var halfSize = (claimSize - 1) / 2;
+        var worldPosition = Vector3i.FromVector3Rounded(Vector3IntAdapter.ToGame(position));
 
-        var minX = checkPos.x - halfSize;
-        var maxX = checkPos.x + halfSize;
-        var minZ = checkPos.z - halfSize;
-        var maxZ = checkPos.z + halfSize;
-
-        var minChunkX = minX >> 4;
-        var maxChunkX = maxX >> 4;
-        var minChunkZ = minZ >> 4;
-        var maxChunkZ = maxZ >> 4;
-
-        for (var cx = minChunkX; cx <= maxChunkX; cx++)
-        {
-            var worldX = cx << 4;
-            for (var cz = minChunkZ; cz <= maxChunkZ; cz++)
-            {
-                var worldZ = cz << 4;
-                var chunk = world.GetChunkFromWorldPos(new Vector3i(worldX, checkPos.y, worldZ)) as Chunk;
-                if (chunk == null || !chunk.IndexedBlocks.TryGetValue("lpblock", out var lpBlocks)) continue;
-
-                var worldPos = chunk.GetWorldPos();
-                foreach (var localPos in lpBlocks)
-                {
-                    var blockX = localPos.x + worldPos.x;
-                    var blockZ = localPos.z + worldPos.z;
-
-                    if (blockX < minX || blockX > maxX || blockZ < minZ || blockZ > maxZ) continue;
-
-                    if (!BlockLandClaim.IsPrimary(chunk.GetBlock(localPos))) continue;
-
-                    var blockPos = new Vector3i(blockX, localPos.y + worldPos.y, blockZ);
-                    var owner = players.GetLandProtectionBlockOwner(blockPos);
-
-                    if (owner == null || !world.IsLandProtectionValidForPlayer(owner)) continue;
-
-                    if (playerData == owner) return LandClaimOwner.Self;
-                    return owner.ACL?.Contains(playerData.PrimaryId) == true
-                        ? LandClaimOwner.Ally
-                        : LandClaimOwner.Other;
-                }
-            }
-        }
-
-        return LandClaimOwner.None;
+        return EnumMapper<EnumLandClaimOwner, LandClaimOwner>.Map(
+            gm.World.GetLandClaimOwner(worldPosition, playerData));
     }
 
     public Api.Contracts.ClientInfo GetClientInfoByEntityId(int entityId)
