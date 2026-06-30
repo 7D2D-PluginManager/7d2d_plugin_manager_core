@@ -20,4 +20,10 @@ public class GameUtil : ProxyObject, IGameUtil
     public int WorldTimeToHours(ulong worldTime) => GameUtils.WorldTimeToHours(worldTime);
 
     public int WorldTimeToMinutes(ulong worldTime) => GameUtils.WorldTimeToMinutes(worldTime);
+
+    public bool IsBloodMoonActive()
+    {
+        var duskDawn = GameUtils.CalcDuskDawnHours(GameStats.GetInt(EnumGameStats.DayLightLength));
+        return GameUtils.IsBloodMoonTime(GameManager.Instance.World.worldTime, duskDawn, GameStats.GetInt(EnumGameStats.BloodMoonDay));
+    }
 }

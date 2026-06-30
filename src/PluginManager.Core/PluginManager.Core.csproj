@@ -42,19 +42,13 @@
         <StaticPath>..\..\static\</StaticPath>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data"/>
-        <Reference Include="System.Xml"/>
-    </ItemGroup>
-    <ItemGroup>
         <Compile Include="Adapters\ClientInfoAdapter.cs"/>
         <Compile Include="Adapters\Vector3Adapter.cs"/>
         <Compile Include="Adapters\Vector3IntAdapter.cs"/>
         <Compile Include="Application.cs"/>
-        <Compile Include="Capabilities\Events\EventRegistry.cs" />
-        <Compile Include="Capabilities\Events\EventDispatcher.cs" />
-        <Compile Include="Capabilities\Events\HandlerBucket.cs" />
+        <Compile Include="Capabilities\Events\EventRegistry.cs"/>
+        <Compile Include="Capabilities\Events\EventDispatcher.cs"/>
+        <Compile Include="Capabilities\Events\HandlerBucket.cs"/>
         <Compile Include="Capabilities\GeoIP\GeoIpDataStorage.cs"/>
         <Compile Include="Capabilities\GeoIP\GeoIpService.cs"/>
         <Compile Include="Capabilities\GeoIP\IGeoIpService.cs"/>
@@ -79,9 +73,9 @@
         <Compile Include="ModContext.cs"/>
         <Compile Include="Patches\ChatMessagePatch.cs"/>
         <Compile Include="Patches\DamageEntityPatch.cs"/>
-        <Compile Include="Patches\GameMessagePatch.cs" />
-        <Compile Include="Patches\TileEntityLockPatch.cs"/>
-        <Compile Include="Patches\OpenTileEntityAllowedPatch.cs"/>
+        <Compile Include="Patches\GameMessagePatch.cs"/>
+        <Compile Include="Patches\GameUpdatePatch.cs"/>
+        <Compile Include="Patches\TileEntityLock.cs" />
         <Compile Include="Patches\PlayerDisconnectPatch.cs"/>
         <Compile Include="Patches\PlayerJoinedPatch.cs"/>
         <Compile Include="Patches\MinEventActionLogPatch.cs"/>
@@ -94,12 +88,12 @@
         <Compile Include="PluginManager.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <ItemGroup>
         <PackageReference Include="MaxMind.GeoIP2" Version="5.4.1"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4"/>
     </ItemGroup>
     <ItemGroup>
+        <Reference Include="Microsoft.CSharp" />
         <Reference Include="PluginManager.Api">
             <HintPath>$(PluginManagerApiPath)PluginManager.Api.dll</HintPath>
         </Reference>
@@ -109,6 +103,10 @@
         </Reference>
         <Reference Include="Assembly-CSharp">
             <HintPath>$(GameLibsPath)Assembly-CSharp.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="mscorlib">
+            <HintPath>$(GameLibsPath)mscorlib.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="LogLibrary">
@@ -123,7 +121,13 @@
             <HintPath>$(GameLibsPath)UnityEngine.AudioModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(GameLibsPath)System.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
     </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <Target Name="CopyToPluginFolder" AfterTargets="Build">
         <ItemGroup>
             <StaticFiles Include="$(StaticPath)\**\*.*"/>
