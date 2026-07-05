@@ -25,13 +25,9 @@ public static class TileEntityFeatureCanLockPatch
 {
     static void Postfix(TEFeatureAbs __instance, int _lockingPlayerID, ref bool __result)
     {
-        if (!__result) return;
+        if (!__result || __instance is not TEFeatureStorage) return;
 
-        var type = __instance is TEFeatureStorage
-            ? Api.Contracts.TileEntityType.Loot
-            : Api.Contracts.TileEntityType.None;
-
-        if (!TileEntityAccessGuard.IsAllowed(_lockingPlayerID, -1, type, __instance.ToWorldPos()))
+        if (!TileEntityAccessGuard.IsAllowed(_lockingPlayerID, -1, Api.Contracts.TileEntityType.Loot, __instance.ToWorldPos()))
             __result = false;
     }
 }
