@@ -58,6 +58,8 @@
         <Compile Include="Capabilities\Utils\GameStatsUtil.cs"/>
         <Compile Include="Capabilities\Utils\PlayerUtil.cs"/>
         <Compile Include="Capabilities\Utils\GameUtil.cs"/>
+        <Compile Include="Capabilities\Utils\ContainerUtil.cs"/>
+        <Compile Include="Capabilities\Utils\ClaimUtil.cs"/>
         <Compile Include="CapabilityRegistry.cs"/>
         <Compile Include="Commands\CommandContext.cs"/>
         <Compile Include="Commands\CommandManager.cs"/>
@@ -72,6 +74,7 @@
         <Compile Include="Mappers\EnumMapper.cs"/>
         <Compile Include="ModContext.cs"/>
         <Compile Include="Patches\ChatMessagePatch.cs"/>
+        <Compile Include="Patches\ContainerClosedPatch.cs"/>
         <Compile Include="Patches\DamageEntityPatch.cs"/>
         <Compile Include="Patches\GameMessagePatch.cs"/>
         <Compile Include="Patches\GameUpdatePatch.cs"/>

@@ -36,6 +36,8 @@ public class Application : IModApi
             capabilities.Register<IGameUtil>(new GameUtil());
             capabilities.Register<IGameStatsUtil>(new GameStatsUtil());
             capabilities.Register<IGamePrefsUtil>(new GamePrefsUtil());
+            capabilities.Register<IContainerUtil>(new ContainerUtil());
+            capabilities.Register<IClaimUtil>(new ClaimUtil());
             capabilities.Register<IPlayerLanguageStore>(playerLanguageStore);
             capabilities.Register<IGeoIpDataStorage>(geoIpDataStorage);
 
