@@ -26,4 +26,21 @@ public class GameUtil : ProxyObject, IGameUtil
         var duskDawn = GameUtils.CalcDuskDawnHours(GameStats.GetInt(EnumGameStats.DayLightLength));
         return GameUtils.IsBloodMoonTime(GameManager.Instance.World.worldTime, duskDawn, GameStats.GetInt(EnumGameStats.BloodMoonDay));
     }
+
+    public void SaveWorld()
+    {
+        if (!SingletonMonoBehaviour<ConnectionManager>.Instance.IsServer) return;
+        GameManager.Instance.SaveWorld();
+    }
+
+    public void SavePlayerData()
+    {
+        if (!SingletonMonoBehaviour<ConnectionManager>.Instance.IsServer) return;
+        GameManager.Instance.SaveLocalPlayerData();
+    }
+
+    public void ShutdownServer()
+    {
+        UnityEngine.Application.Quit();
+    }
 }
