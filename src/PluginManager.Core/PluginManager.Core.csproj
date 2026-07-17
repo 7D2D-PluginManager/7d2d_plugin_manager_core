@@ -54,6 +54,7 @@
         <Compile Include="Capabilities\GeoIP\IGeoIpService.cs"/>
         <Compile Include="Capabilities\Logger\Logger.cs"/>
         <Compile Include="Capabilities\Localization\PlayerLanguageStore.cs"/>
+        <Compile Include="Capabilities\Storage\JsonStorage.cs"/>
         <Compile Include="Capabilities\Utils\GamePrefsUtil.cs"/>
         <Compile Include="Capabilities\Utils\GameStatsUtil.cs"/>
         <Compile Include="Capabilities\Utils\PlayerUtil.cs"/>

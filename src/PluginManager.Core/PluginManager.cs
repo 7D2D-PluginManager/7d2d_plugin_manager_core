@@ -37,8 +37,8 @@ public class PluginManager : IPluginManager
 
         var setup = new AppDomainSetup
         {
-            ApplicationBase = _pluginsDirectory,
-            PrivateBinPath = _rootDirectory
+            ApplicationBase = _rootDirectory,
+            PrivateBinPath = "Plugins"
         };
 
         var domain = AppDomain.CreateDomain($"PluginDomain_{Guid.NewGuid()}", null, setup);
@@ -46,7 +46,7 @@ public class PluginManager : IPluginManager
         var bootstrap = (PluginBootstrap)domain.CreateInstanceAndUnwrap(
             typeof(PluginBootstrap).Assembly.FullName,
             typeof(PluginBootstrap).FullName!,
-            false, BindingFlags.Default, null, [dllPath],
+            false, BindingFlags.Default, null, [dllPath, name.Trim(), _rootDirectory],
             null, null
         );
 
@@ -96,31 +96,18 @@ public class PluginManager : IPluginManager
 
     public void Load()
     {
-        var defaultPluginFile = Path.Combine(_rootDirectory, "Config", "plugins.txt");
-        var pluginNames = ReadPluginNamesFromFile(defaultPluginFile);
+        if (!Directory.Exists(_pluginsDirectory))
+        {
+            Log.Error($"Plugins directory not found: {_pluginsDirectory}");
+            return;
+        }
+
+        var pluginNames = Directory.GetFiles(_pluginsDirectory, "*.dll")
+            .Select(Path.GetFileNameWithoutExtension)
+            .OrderBy(name => name, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
         LoadPlugins(pluginNames);
-    }
-
-    private IEnumerable<string> ReadPluginNamesFromFile(string filePath)
-    {
-        if (!File.Exists(filePath))
-        {
-            Log.Error($"Plugins list file not found: {filePath}");
-            return Enumerable.Empty<string>();
-        }
-
-        try
-        {
-            return File.ReadAllLines(filePath)
-                .Select(line => line.Trim())
-                .Where(line => !string.IsNullOrWhiteSpace(line))
-                .ToList();
-        }
-        catch (Exception ex)
-        {
-            Log.Error($"Error reading plugins file '{filePath}': {ex.Message}");
-            return Enumerable.Empty<string>();
-        }
     }
 
     private void LoadPlugins(IEnumerable<string> pluginNames)
@@ -141,6 +128,6 @@ public class PluginManager : IPluginManager
 
     private string GetPluginDllPath(string name)
     {
-        return Path.Combine(_pluginsDirectory, name, name + ".dll");
+        return Path.Combine(_pluginsDirectory, name + ".dll");
     }
 }

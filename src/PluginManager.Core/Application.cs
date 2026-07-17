@@ -5,12 +5,14 @@ using PluginManager.Api.Capabilities.Implementations.Commands;
 using PluginManager.Api.Capabilities.Implementations.Events;
 using PluginManager.Api.Capabilities.Implementations.GeoIp;
 using PluginManager.Api.Capabilities.Implementations.Logger;
+using PluginManager.Api.Capabilities.Implementations.Storage;
 using PluginManager.Api.Capabilities.Implementations.Translations;
 using PluginManager.Api.Capabilities.Implementations.Utils;
 using PluginManager.Core.Capabilities.Events;
 using PluginManager.Core.Capabilities.GeoIp;
 using PluginManager.Core.Capabilities.Localization;
 using PluginManager.Core.Capabilities.Logger;
+using PluginManager.Core.Capabilities.Storage;
 using PluginManager.Core.Capabilities.Utils;
 using PluginManager.Core.Commands;
 
@@ -40,6 +42,7 @@ public class Application : IModApi
             capabilities.Register<IClaimUtil>(new ClaimUtil());
             capabilities.Register<IPlayerLanguageStore>(playerLanguageStore);
             capabilities.Register<IGeoIpDataStorage>(geoIpDataStorage);
+            capabilities.Register<IStorage>(new JsonStorage(Path.Combine(modInstance.Path, "Data")));
 
             var pluginManager = new PluginManager(modInstance.Path, capabilities);
 
@@ -54,7 +57,7 @@ public class Application : IModApi
             try
             {
                 ModContext.GeoIpService =
-                    new GeoIpService(Path.Combine(modInstance.Path, "GeoIp", "GeoLite2-City.mmdb"));
+                    new GeoIpService(Path.Combine(modInstance.Path, "Data", "GeoLite2-City.mmdb"));
             }
             catch (Exception ex)
             {
