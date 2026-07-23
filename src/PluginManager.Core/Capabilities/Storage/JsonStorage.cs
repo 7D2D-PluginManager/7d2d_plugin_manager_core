@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -10,9 +11,15 @@ public sealed class JsonStorage : ProxyObject, IStorage
 {
     public string Name => nameof(JsonStorage);
 
+    private sealed class CacheEntry
+    {
+        public Dictionary<string, string> Data;
+        public DateTime FileTimeUtc;
+    }
+
     private readonly string _root;
     private readonly object _gate = new();
-    private readonly Dictionary<string, Dictionary<string, string>> _cache = new();
+    private readonly Dictionary<string, CacheEntry> _cache = new();
 
     public JsonStorage(string root)
     {
@@ -71,17 +78,18 @@ public sealed class JsonStorage : ProxyObject, IStorage
     private Dictionary<string, string> Load(string scope, string collection)
     {
         var cacheKey = scope + "/" + collection;
-
-        if (_cache.TryGetValue(cacheKey, out var cached))
-            return cached;
-
         var path = FilePath(scope, collection);
+        var fileTimeUtc = File.GetLastWriteTimeUtc(path);
+
+        if (_cache.TryGetValue(cacheKey, out var cached) && cached.FileTimeUtc == fileTimeUtc)
+            return cached.Data;
+
         var data = File.Exists(path)
             ? JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(path))
             : null;
 
         data ??= new Dictionary<string, string>();
-        _cache[cacheKey] = data;
+        _cache[cacheKey] = new CacheEntry { Data = data, FileTimeUtc = fileTimeUtc };
         return data;
     }
 
@@ -96,6 +104,9 @@ public sealed class JsonStorage : ProxyObject, IStorage
             File.Replace(tmp, path, null);
         else
             File.Move(tmp, path);
+
+        var cacheKey = scope + "/" + collection;
+        _cache[cacheKey] = new CacheEntry { Data = data, FileTimeUtc = File.GetLastWriteTimeUtc(path) };
     }
 
     private string FilePath(string scope, string collection)
