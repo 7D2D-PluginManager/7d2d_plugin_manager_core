@@ -105,6 +105,23 @@ public class PlayerUtil : ProxyObject, IPlayerUtil
             : 1000;
     }
 
+    public bool AreFriends(string playerIdA, string playerIdB)
+    {
+        if (string.IsNullOrEmpty(playerIdA) || string.IsNullOrEmpty(playerIdB)) return false;
+
+        var players = GameManager.Instance.persistentPlayers;
+        if (players == null) return false;
+
+        if (!PlatformUserIdentifierAbs.TryFromCombinedString(playerIdA, out var idA)) return false;
+        if (!PlatformUserIdentifierAbs.TryFromCombinedString(playerIdB, out var idB)) return false;
+
+        var dataA = players.GetPlayerData(idA);
+        var dataB = players.GetPlayerData(idB);
+        if (dataA == null || dataB == null) return false;
+
+        return dataA.IsAlly(dataB);
+    }
+
     private static bool TryGetEntityPlayer(int entityId, out EntityPlayer entityPlayer)
     {
         return GameManager.Instance.World.Players.dict.TryGetValue(entityId, out entityPlayer);

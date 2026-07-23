@@ -32,6 +32,18 @@ public static class TileEntityFeatureCanLockPatch
     }
 }
 
+[HarmonyPatch(typeof(Entity), nameof(Entity.CanLockOnServer))]
+public static class EntityCanLockPatch
+{
+    static void Postfix(Entity __instance, int _lockingPlayerID, ref bool __result)
+    {
+        if (!__result || __instance is not EntityItem) return;
+
+        if (!TileEntityAccessGuard.IsAllowed(_lockingPlayerID, __instance.entityId, Api.Contracts.TileEntityType.Loot, World.worldToBlockPos(__instance.position)))
+            __result = false;
+    }
+}
+
 internal static class TileEntityAccessGuard
 {
     public static bool IsAllowed(int entityId, int tileEntityId, Api.Contracts.TileEntityType type, Vector3i position)

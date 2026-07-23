@@ -94,6 +94,30 @@ public class ContainerUtil : ProxyObject, IContainerUtil
         return moved;
     }
 
+    public Api.Contracts.DroppedBackpack GetDroppedBackpack(int entityId)
+    {
+        var players = GameManager.Instance.persistentPlayers;
+        if (players == null) return new Api.Contracts.DroppedBackpack(false, -1, null, 0);
+
+        foreach (var owner in players.Players.Values)
+        {
+            var found = false;
+            uint timestamp = 0;
+
+            owner.ProcessBackpacks(backpack =>
+            {
+                if (backpack.EntityID != entityId) return;
+                found = true;
+                timestamp = backpack.Timestamp;
+            });
+
+            if (found)
+                return new Api.Contracts.DroppedBackpack(true, owner.EntityId, owner.PrimaryId?.CombinedString, (int)timestamp);
+        }
+
+        return new Api.Contracts.DroppedBackpack(false, -1, null, 0);
+    }
+
     private static TEFeatureStorage GetStorage(Vector3Int position)
     {
         var te = GameManager.Instance.World.GetTileEntity(Vector3IntAdapter.ToGame(position));
