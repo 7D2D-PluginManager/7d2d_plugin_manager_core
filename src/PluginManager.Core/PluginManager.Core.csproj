@@ -61,6 +61,8 @@
         <Compile Include="Capabilities\Utils\GameUtil.cs"/>
         <Compile Include="Capabilities\Utils\ContainerUtil.cs"/>
         <Compile Include="Capabilities\Utils\ClaimUtil.cs"/>
+        <Compile Include="Capabilities\Utils\PoiUtil.cs"/>
+        <Compile Include="Capabilities\Utils\WorldUtil.cs"/>
         <Compile Include="CapabilityRegistry.cs"/>
         <Compile Include="Commands\CommandContext.cs"/>
         <Compile Include="Commands\CommandManager.cs"/>
@@ -81,6 +83,7 @@
         <Compile Include="Patches\GameUpdatePatch.cs"/>
         <Compile Include="Patches\TileEntityLock.cs" />
         <Compile Include="Patches\PlayerDisconnectPatch.cs"/>
+        <Compile Include="Patches\QuestLockPoiPatch.cs"/>
         <Compile Include="Patches\PlayerJoinedPatch.cs"/>
         <Compile Include="Patches\MinEventActionLogPatch.cs"/>
         <Compile Include="Patches\PlayerSpawnedInWorldPatch.cs"/>

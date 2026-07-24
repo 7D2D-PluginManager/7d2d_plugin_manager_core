@@ -122,9 +122,28 @@ public class PlayerUtil : ProxyObject, IPlayerUtil
         return dataA.IsAlly(dataB);
     }
 
+    public bool AreInSameParty(string playerIdA, string playerIdB)
+    {
+        if (!TryGetEntityPlayerByPlayerId(playerIdA, out var a)) return false;
+        if (!TryGetEntityPlayerByPlayerId(playerIdB, out var b)) return false;
+
+        return a.IsInParty() && a.Party.MemberList.Contains(b);
+    }
+
     private static bool TryGetEntityPlayer(int entityId, out EntityPlayer entityPlayer)
     {
         return GameManager.Instance.World.Players.dict.TryGetValue(entityId, out entityPlayer);
+    }
+
+    private static bool TryGetEntityPlayerByPlayerId(string playerId, out EntityPlayer entityPlayer)
+    {
+        entityPlayer = null;
+        if (string.IsNullOrEmpty(playerId)) return false;
+
+        var clientInfo = ConnectionManager.Instance.Clients.list.Find(c =>
+            c.CrossplatformId?.CombinedString == playerId || c.PlatformId?.CombinedString == playerId);
+
+        return clientInfo != null && TryGetEntityPlayer(clientInfo.entityId, out entityPlayer);
     }
 
     private static bool TryClientInfo(int entityId, out ClientInfo clientInfo)

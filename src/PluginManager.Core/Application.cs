@@ -40,6 +40,8 @@ public class Application : IModApi
             capabilities.Register<IGamePrefsUtil>(new GamePrefsUtil());
             capabilities.Register<IContainerUtil>(new ContainerUtil());
             capabilities.Register<IClaimUtil>(new ClaimUtil());
+            capabilities.Register<IPoiUtil>(new PoiUtil());
+            capabilities.Register<IWorldUtil>(new WorldUtil());
             capabilities.Register<IPlayerLanguageStore>(playerLanguageStore);
             capabilities.Register<IGeoIpDataStorage>(geoIpDataStorage);
             capabilities.Register<IStorage>(new JsonStorage(Path.Combine(modInstance.Path, "Data")));
