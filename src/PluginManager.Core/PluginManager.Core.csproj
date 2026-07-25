@@ -61,6 +61,8 @@
         <Compile Include="Capabilities\Utils\GameUtil.cs"/>
         <Compile Include="Capabilities\Utils\ContainerUtil.cs"/>
         <Compile Include="Capabilities\Utils\ClaimUtil.cs"/>
+        <Compile Include="Capabilities\Utils\BlockUtil.cs"/>
+        <Compile Include="Capabilities\Utils\ItemUtil.cs"/>
         <Compile Include="Capabilities\Utils\PoiUtil.cs"/>
         <Compile Include="Capabilities\Utils\WorldUtil.cs"/>
         <Compile Include="CapabilityRegistry.cs"/>
@@ -76,6 +78,7 @@
         <Compile Include="Mappers\CountryToCultureMapper.cs"/>
         <Compile Include="Mappers\EnumMapper.cs"/>
         <Compile Include="ModContext.cs"/>
+        <Compile Include="Patches\ChangeBlocksPatch.cs"/>
         <Compile Include="Patches\ChatMessagePatch.cs"/>
         <Compile Include="Patches\ContainerClosedPatch.cs"/>
         <Compile Include="Patches\DamageEntityPatch.cs"/>
