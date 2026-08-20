@@ -27,6 +27,7 @@ public class Application : IModApi
             var eventRegistry = new EventRegistry();
             var eventDispatcher = new EventDispatcher(eventRegistry);
             var commandManager = new CommandManager();
+            var consoleCommandManager = new ConsoleCommandManager();
             var playerLanguageStore = new PlayerLanguageStore();
             var geoIpDataStorage = new GeoIpDataStorage();
 
@@ -34,6 +35,7 @@ public class Application : IModApi
             capabilities.Register<IEventHandlers>(eventRegistry);
             capabilities.Register<ILogger>(new Logger());
             capabilities.Register<ICommandManager>(commandManager);
+            capabilities.Register<IConsoleCommandManager>(consoleCommandManager);
             capabilities.Register<IPlayerUtil>(new PlayerUtil());
             capabilities.Register<IGameUtil>(new GameUtil());
             capabilities.Register<IGameStatsUtil>(new GameStatsUtil());

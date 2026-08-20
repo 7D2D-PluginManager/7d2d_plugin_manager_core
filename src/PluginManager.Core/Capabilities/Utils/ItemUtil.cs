@@ -22,6 +22,11 @@ public class ItemUtil : ProxyObject, IItemUtil
 
     public bool SpawnItemInInventory(int entityId, string name, int count)
     {
+        return SpawnItemInInventory(entityId, name, count, 0);
+    }
+
+    public bool SpawnItemInInventory(int entityId, string name, int count, int quality)
+    {
         if (count <= 0) return false;
 
         var world = GameManager.Instance?.World;
@@ -36,7 +41,7 @@ public class ItemUtil : ProxyObject, IItemUtil
         if (!world.Players.dict.TryGetValue(entityId, out var player)) return false;
         if (player == null || !player.IsSpawned() || player.IsDead()) return false;
 
-        var itemValue = new ItemValue(source.type, 0, 0, false, null, 1f);
+        var itemValue = new ItemValue(source.type, quality, quality, false, null, 1f);
         var stack = new ItemStack(itemValue, count);
 
         var entityCreationData = new EntityCreationData

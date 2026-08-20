@@ -68,6 +68,9 @@
         <Compile Include="CapabilityRegistry.cs"/>
         <Compile Include="Commands\CommandContext.cs"/>
         <Compile Include="Commands\CommandManager.cs"/>
+        <Compile Include="Commands\ConsoleCommandContext.cs"/>
+        <Compile Include="Commands\ConsoleCommandManager.cs"/>
+        <Compile Include="Commands\PluginConsoleCommand.cs"/>
         <Compile Include="Config.cs"/>
         <Compile Include="ConsoleCommands\PluginCmdCommand.cs"/>
         <Compile Include="ConsoleCommands\PluginListCommand.cs"/>

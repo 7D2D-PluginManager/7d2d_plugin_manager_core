@@ -93,6 +93,14 @@ public class PlayerUtil : ProxyObject, IPlayerUtil
         return TryClientInfo(entityId, out var clientInfo) ? ClientInfoAdapter.FromGame(clientInfo) : null;
     }
 
+    public Api.Contracts.ClientInfo GetClientInfo(string nameOrId)
+    {
+        if (string.IsNullOrEmpty(nameOrId)) return null;
+
+        var clientInfo = ConnectionManager.Instance.Clients.GetForNameOrId(nameOrId);
+        return clientInfo == null ? null : ClientInfoAdapter.FromGame(clientInfo);
+    }
+
     public IEnumerable<Api.Contracts.ClientInfo> GetClientInfoList()
     {
         return ConnectionManager.Instance.Clients.list.Select(ClientInfoAdapter.FromGame).ToList();
