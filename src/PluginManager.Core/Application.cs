@@ -88,11 +88,24 @@ public class Application : IModApi
             {
                 Log.Error($"Plugin loading failed: {ex}");
             }
+
+            ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
+            ModEvents.GameShutdown.RegisterHandler(OnGameShutdown);
         }
         catch (Exception ex)
         {
             Log.Error($"Fatal init error: {ex}");
             throw;
         }
+    }
+
+    private static void OnGameStartDone(ref ModEvents.SGameStartDoneData data)
+    {
+        GameState.MarkStarted();
+    }
+
+    private static void OnGameShutdown(ref ModEvents.SGameShutdownData data)
+    {
+        GameState.MarkStopping();
     }
 }

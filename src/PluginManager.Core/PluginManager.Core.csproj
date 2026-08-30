@@ -80,6 +80,7 @@
         <Compile Include="LoadedPlugin.cs"/>
         <Compile Include="Mappers\CountryToCultureMapper.cs"/>
         <Compile Include="Mappers\EnumMapper.cs"/>
+        <Compile Include="GameState.cs"/>
         <Compile Include="ModContext.cs"/>
         <Compile Include="Patches\ChangeBlocksPatch.cs"/>
         <Compile Include="Patches\ChatMessagePatch.cs"/>

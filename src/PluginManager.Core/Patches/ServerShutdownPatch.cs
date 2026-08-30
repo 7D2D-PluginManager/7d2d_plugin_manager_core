@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using HarmonyLib;
 
@@ -9,6 +9,8 @@ public static class ServerShutdownPatch
 {
     static void Prefix()
     {
+        GameState.MarkStopping();
+
         try
         {
             Log.Out("Unloading all plugins...");
